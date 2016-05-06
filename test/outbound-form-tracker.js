@@ -155,6 +155,21 @@ describe('outboundFormTracker', function() {
         .waitUntil(ga.hitDataMatches([['[0].devId', constants.DEV_ID]]));
   });
 
+  it('should send events on hubspot form submits', function() {
+
+    var hitData = browser
+        .execute(utilities.stopFormSubmitEvents)
+        .execute(utilities.stubBeacon)
+        .execute(ga.run, 'require', 'outboundFormTracker')
+        .click('#submit-4')
+        .execute(ga.getHitData)
+        .value;
+
+    assert.equal(hitData[0].eventCategory, 'HubSpot Form');
+    assert.equal(hitData[0].eventAction, 'submit');
+    assert.equal(hitData[0].eventLabel, 'https://forms.hubspot.com/uploads/form/v2/10000');
+  });
+
 });
 
 
