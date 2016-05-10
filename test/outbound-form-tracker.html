@@ -21,6 +21,25 @@
     <input id="submit-3" type="submit">
   </form>
 
+  <form id="hsform" action="https://forms.hubspot.com/uploads/form/v2/10000">
+    <input id="submit-4" type="submit">
+  </form>
+
+  <script>
+    document.getElementById('hsform').addEventListener('submit', function(ev){
+      ev.target.dispatchEvent(new Event('hsvalidatedsubmit', { bubbles: true }));
+      ev.preventDefault();
+      ev.stopPropagation();
+      return false;
+    }, { capture: true });
+    document.body.addEventListener('hsvalidatedsubmit', function(){
+      console.log('hsvalidatedsubmit');
+    });
+    document.body.addEventListener('submit', function(){
+      console.log('should not receive this submit!');
+    });
+  </script>
+
 </body>
 </html>
 
